@@ -1,0 +1,40 @@
+<h4>Entropy Method</h4>
+<p>The algorithm to calculate the scores using the entropy method is as follows:</p>
+<ul>
+    <li>We create a data matrix with indicators in rows and criteria in columns. We place a score on each indicator according to each criterion.</li>
+    <li>We normalize each score by dividing it by the sum of all scores for each criterion \( p_{ij} \). This guarantees each column’s values are comparable and scales them between 0 and 1.</li>
+    <li>We calculate entropy using the following formulation:</li>
+</ul>
+
+<p style="text-align: center;">
+    \[ E_j = -\frac{1}{\log(n)} \sum_{i=1}^n \left( p_{ij} \log(p_{ij}) \right) \]
+</p>
+
+<p>Where:</p>
+<ul>
+    <li>\( E_j \) is the entropy for criterion \( j \).</li>
+    <li>\( p_{ij} \) is the normalized score for indicator \( i \) under criterion \( j \).</li>
+    <li>\( n \) is the number of indicators.</li>
+</ul>
+
+<p>Entropy measures the amount of uncertainty or variability in each criterion. The higher the entropy, the lower the amount of useful information the criterion provides.</p>
+
+<ul>
+    <li>We calculate diversity as \( D_j = 1 - E_j \), which represents how much information or variability each criterion provides.</li>
+    <li>We calculate weights \( W_j \): the diversity values are normalized to create weights for each criterion, indicating the importance of each criterion based on the information it carries.</li>
+    <li>We calculate the final score: as a final step we compute the weighted sum of each indicator’s normalized scores across all criteria:</li>
+</ul>
+
+<p style="text-align: center;">
+    \[ S_i = \sum_{j=1}^n \left( p_{ij} \times W_j \right) \]
+</p>
+
+<p>Where:</p>
+<ul>
+    <li>\( S_i \) is the final score for indicator \( i \).</li>
+    <li>\( p_{ij} \) is the normalized score for indicator \( i \) under criterion \( j \).</li>
+    <li>\( W_j \) is the weight of criterion \( j \).</li>
+</ul>
+
+<p>The indicators are ranked based on these final scores, with the highest score receiving the highest priority.</p>
+

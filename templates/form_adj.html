@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicator Input Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Bootstrap Icons -->
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        /* Hidden class to show/hide elements */
+        .hidden {
+            display: none;
+        }
+
+        /* Styling the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .buttons-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Select Category -->
+    <div class="form-group">
+        <label for="categorySelect">Select Category</label>
+        <select class="form-select" id="categorySelect" required>
+            <option value="">-- Select Category --</option>
+        </select>
+    </div>
+
+    <!-- Table for inputting indicator values -->
+    <form method="POST" action="/process_data">
+        <!-- Hidden input to capture the selected category -->
+        <input type="hidden" id="selectedCategoryInput" name="category" value="{{ selected_category }}">
+
+        <div id="inputTable" class="{% if not selected_category %}hidden{% endif %}">
+            <h4>Enter values between 1 and 5 for the selected indicators</h4>
+            <table id="indicatorTable">
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Relevance (R)
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="How related to manufacturing performance is the indicator, and how relevant to follow key aspects of industry? 5: Highly relevant to the industry; 4: Very relevant to the industry; 3: Moderately relevant; 2: Limited relevance but still considered; 1: Somewhat relevant but less critical.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                        </th>
+                        <th>Data Availability (D)
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="The easier it is to find the data, the better we can track industry performance. 5: Data is easily available from multiple, consistent sources; 4: Data is available and generally consistent; 3: Data is available but not always up-to-date or fully reliable; 2: Data is available but harder to access or less reliable; 1: Data is available but limited in scope and harder to find.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                        </th>
+                        <th>Data Quality (Q)
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="If the data is valid, timely, comprehensive, disaggregated, and consistent, it forms a strong foundation for analysis. 5: Data is of very high quality; 4: Data is of good quality; 3: Data is of moderate quality; 2: Data is of limited quality; 1: Data is of low quality.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                        </th>
+                        <th>Policy Importance (P)
+                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="How important is the indicator in shaping and guiding policy decisions? 5: Very important; 4: Important but not the primary focus.; 3: Moderately important and considered in policies; 2: Occasionally used, but not a priority; 1: Used, but less often prioritized.">
+                                <i class="bi bi-info-circle"></i>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows will be populated dynamically -->
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
+    </form>
+
+    <!-- Display the ranking table if available -->
+    <div id="rankingTable">
+        {% if ranking %}
+            <h2>Ranking for {{ selected_category }}</h2>
+            {{ ranking | safe }}
+        {% endif %}
+    </div>
+
+     <!-- Buttons for exporting and navigating back -->
+    <div class="buttons-container">
+    <!-- Button to go back to Page 2 -->
+        <a href="/indicator_list" class="btn btn-secondary mt-3">Back to List Page</a>
+    
+    <!-- Button to export data as CSV -->
+        <a href="/export_data" class="btn btn-success mt-3">Export data</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const data = {{ categories_json | tojson }};  // Data from Flask
+
+    const categorySelect = document.getElementById('categorySelect');
+    const inputTable = document.getElementById('inputTable');
+    const tableBody = document.getElementById('tableBody');
+    const selectedCategoryInput = document.getElementById('selectedCategoryInput');
+
+    // Group ordering
+    const groupOrder = [
+        "Strategic", "Output", "Intermediate Consumption", 
+        "Employment", "Wages", "Investment", "Exports", 
+        "Imports", "Environment", "Innovation", 
+        "Automation and Artificial Intelligence"
+    ];
+
+    // Function to create table rows based on selected category
+    function createTableRows(indicators) {
+        tableBody.innerHTML = '';  // Clear previous rows
+        indicators.forEach(indicator => {
+            const row = document.createElement('tr');
+
+            // Create a cell for the indicator name
+            const indicatorCell = document.createElement('td');
+            indicatorCell.textContent = indicator;
+            row.appendChild(indicatorCell);
+
+            // Create input cells for each criterion (R, D, Q, P)
+            ['r', 'q', 'd', 'p'].forEach(criterion => {
+                const cell = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.name = `${indicator}_${criterion}`;
+                input.min = 1;
+                input.max = 5;
+                input.required = true;
+                input.className = 'form-control';
+                cell.appendChild(input);
+                row.appendChild(cell);
+            });
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Function to populate category dropdown in the correct order
+    function populateCategoryDropdown() {
+        let isCategorySelected = false; // Track if any category is selected
+
+        groupOrder.forEach(function (category) {
+            if (data[category]) {  // Only add categories that exist in the data
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+
+                // Make "Strategic" the default if no category is selected
+                if (!selectedCategoryInput.value && category === "Strategic") {
+                    option.selected = true;
+                    selectedCategoryInput.value = "Strategic";  // Set hidden input value
+                    isCategorySelected = true;
+                    createTableRows(data["Strategic"]);  // Populate table with Strategic by default
+                } else if (selectedCategoryInput.value === category) {
+                    option.selected = true;  // Retain the selected category on form submission
+                    isCategorySelected = true;
+                }
+
+                categorySelect.appendChild(option);
+            }
+        });
+
+        // If no category is selected, set "Strategic" as the default category
+        if (!isCategorySelected && data["Strategic"]) {
+            selectedCategoryInput.value = "Strategic";
+            createTableRows(data["Strategic"]);  // Populate the table with Strategic indicators
+        }
+    }
+
+    // Event listener for category selection
+    categorySelect.addEventListener('change', function () {
+        const selectedCategory = this.value;
+
+        if (selectedCategory) {
+            inputTable.classList.remove('hidden');  // Show the table
+            createTableRows(data[selectedCategory]);  // Populate the table with indicators
+            selectedCategoryInput.value = selectedCategory;  // Store the selected category in the hidden input
+        } else {
+            inputTable.classList.add('hidden');  // Hide the table if no category is selected
+        }
+    });
+
+    // Populate the table with the selected category's indicators on page load (if a category is already selected)
+    if (selectedCategoryInput.value) {
+        createTableRows(data[selectedCategoryInput.value]);
+    }
+
+    // Populate the category dropdown on page load
+    populateCategoryDropdown();
+
+    // Initialize tooltips for Bootstrap
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
+</script>
+
+</body>
+</html>
