@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import os
 import io
+import logging
+
 
 app = Flask(__name__)
 
@@ -116,43 +118,52 @@ def get_indicator_info():
     return jsonify({"error": "Indicator not found"}), 404
 
 # Route para procesar datos para la página 3 (Ranking)
+# Route to process data for the ranking page
 @app.route('/process_data', methods=['POST', 'GET'])
 def process_data():
     if request.method == 'GET':
-        selected_category = list(categories.keys())[0]  # Mostrar la primera categoría por defecto
+        selected_category = list(categories.keys())[0]  # Display the first category by default
         return render_template('form_adj.html', 
                                categories=categories.keys(), 
                                selected_category=selected_category, 
                                categories_json=categories)
 
-    # Si es POST, procesa los datos enviados
-    selected_category = request.form['category']
-    indicators_list = categories[selected_category]
-    
-    user_input_data = []
-    for indicator in indicators_list:
-        relevance = int(request.form.get(f'{indicator}_r', 3))
-        data_availability = int(request.form.get(f'{indicator}_q', 3))
-        data_quality = int(request.form.get(f'{indicator}_d', 3))
-        policy_importance = int(request.form.get(f'{indicator}_p', 3))
+    elif request.method == 'POST':
+        # Process POST data
+        selected_category = request.form['category']
+        indicators_list = categories[selected_category]
+        
+        user_input_data = []
+        for indicator in indicators_list:
+            relevance = int(request.form.get(f'{indicator}_r', 3))
+            data_availability = int(request.form.get(f'{indicator}_q', 3))
+            data_quality = int(request.form.get(f'{indicator}_d', 3))
+            policy_importance = int(request.form.get(f'{indicator}_p', 3))
 
-        # Guardar en la base de datos
-        indicator_data = IndicatorData(
-            category=selected_category,
-            indicator=indicator,
-            relevance=relevance,
-            data_availability=data_availability,
-            data_quality=data_quality,
-            policy_importance=policy_importance
-        )
-        db.session.add(indicator_data)
-        db.session.commit()
+            # Save data to database
+            indicator_data = IndicatorData(
+                category=selected_category,
+                indicator=indicator,
+                relevance=relevance,
+                data_availability=data_availability,
+                data_quality=data_quality,
+                policy_importance=policy_importance
+            )
+            db.session.add(indicator_data)
+            db.session.commit()
 
-        # Añadir a la matriz para calcular el ranking
-        user_input_data.append([relevance, data_availability, data_quality, policy_importance])
+            # Add to the list for ranking calculation
+            user_input_data.append([relevance, data_availability, data_quality, policy_importance])
 
-    # Procesar los datos ingresados
-    df_ranking = process_indicator_data(user_input_data, indicators_list)
+        # Process the data to get ranking
+        df_ranking = process_indicator_data(user_input_data, indicators_list)
+
+        # Render the template with the ranking results
+        return render_template('form_adj.html', 
+                               categories=categories.keys(),
+                               selected_category=selected_category,
+                               categories_json=categories,
+                               ranking=df_ranking.to_html())  # Pass the ranking as HTML
 
 # Nuevas rutas para las pestañas adicionales
 
