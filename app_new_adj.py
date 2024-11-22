@@ -20,13 +20,27 @@ db = SQLAlchemy(app)
 class IndicatorData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(100), nullable=False)
+<<<<<<< HEAD
+    indicator = db.Column(db.String(100), nullable=False)               
+=======
     indicator = db.Column(db.String(100), nullable=False)
+>>>>>>> 133efad23439ddc0d3052c8288b5694b0a8607cb
     relevance = db.Column(db.Integer, nullable=False)
     data_availability = db.Column(db.Integer, nullable=False)
     data_quality = db.Column(db.Integer, nullable=False)
     policy_importance = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
+<<<<<<< HEAD
+class SelectedIndicators(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    indicator = db.Column(db.String(100), nullable=False)
+    score = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+=======
+>>>>>>> 133efad23439ddc0d3052c8288b5694b0a8607cb
 # Inicializar la base de datos
 with app.app_context():
     #db.drop_all()
@@ -64,6 +78,55 @@ def process_indicator_data(user_input_data, indicators):
 
 # Ruta para exportar los datos guardados a CSV
 @app.route('/export_data')
+<<<<<<< HEAD
+
+@app.route('/export_data')
+def export_data():
+    # Obtener todos los datos de la base de datos
+    data = IndicatorData.query.all()
+    highlighted = SelectedIndicators.query.all()
+
+    # Convertir los datos de IndicatorData en un DataFrame de pandas
+    rows = [{
+        'Category': d.category,
+        'Indicator': d.indicator,
+        'Relevance': d.relevance,
+        'Data Availability': d.data_availability,
+        'Data Quality': d.data_quality,
+        'Policy Importance': d.policy_importance,
+        'Timestamp': d.timestamp
+    } for d in data]
+    df_data = pd.DataFrame(rows)
+
+    # Convertir los datos de SelectedIndicators en un DataFrame de pandas
+    highlighted_rows = [{
+        'Indicator': h.indicator,
+        'Score': h.score
+    } for h in highlighted]
+    df_highlighted = pd.DataFrame(highlighted_rows)
+
+    # Añadir la columna 'Ranking' a df_data, basada en df_highlighted
+    if not df_highlighted.empty:
+        df_data['Ranking'] = df_data['Indicator'].map(
+            df_highlighted.set_index('Indicator')['Score']
+        )
+    else:
+        df_data['Ranking'] = None
+
+    # Crear un archivo CSV en memoria
+    output = io.BytesIO()
+    df_data.to_csv(output, index=False)
+    output.seek(0)
+
+    # Enviar el archivo CSV para su descarga
+    return send_file(output, mimetype='text/csv', as_attachment=True, download_name='indicator_data_with_ranking.csv')
+
+
+
+"""
+
+=======
+>>>>>>> 133efad23439ddc0d3052c8288b5694b0a8607cb
 def export_data():
     # Obtener todos los datos de la base de datos
     data = IndicatorData.query.all()
@@ -87,6 +150,46 @@ def export_data():
     output.seek(0)
 
     # Enviar el archivo CSV para su descarga
+<<<<<<< HEAD
+    return send_file(output, mimetype='text/csv', as_attachment=True, download_name='indicator_data.csv')
+"""
+
+
+'''
+@app.route('/')
+def home():
+    return render_template('index_indi_adj.html', categories=categories, show_presentation=True)
+'''
+    
+@app.route('/')
+def home():
+    selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()]
+    selected_indicators = selected_indicators or []
+    return render_template(
+        'index_indi_adj.html', 
+        categories=categories, 
+        show_presentation=True, 
+        selected_indicators=selected_indicators
+    )
+
+
+# Route to render Page 2 (back from Page 3)
+
+@app.route('/indicator_list', methods=['GET'])
+def indicators_list():
+    selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()] or []
+    return render_template(
+        'index_indi_adj.html',
+        categories=categories,
+        show_presentation=False,
+        selected_indicators=selected_indicators
+    )
+
+'''
+def indicators_list():
+    return render_template('index_indi_adj.html', categories=categories, show_presentation=False)  # Replace with your Page 2 template
+'''
+=======
     return send_file(output, mimetype='text/csv', as_attachment=True, download_name='indicator_data.csv')  
 
 @app.route('/')
@@ -98,6 +201,7 @@ def home():
 def indicators_list():
     return render_template('index_indi_adj.html', categories=categories, show_presentation=False)  # Replace with your Page 2 template
 
+>>>>>>> 133efad23439ddc0d3052c8288b5694b0a8607cb
 # Route para obtener las categorías e indicadores para los dropdowns en la página 2
 @app.route('/indicators')
 def get_indicators():
@@ -158,6 +262,26 @@ def process_data():
         # Process the data to get ranking
         df_ranking = process_indicator_data(user_input_data, indicators_list)
 
+<<<<<<< HEAD
+        # Guardar los dos indicadores con mayor puntaje
+        top_indicators = df_ranking.nlargest(2, 'Score')
+
+        # Limpiar la tabla antes de agregar los nuevos indicadores
+        SelectedIndicators.query.delete()
+
+        # Agregar los nuevos indicadores seleccionados
+        for _, row in top_indicators.iterrows():
+            selected_indicator = SelectedIndicators(
+                indicator=row['Indicator'],
+                score=row['Score']
+            )
+            db.session.add(selected_indicator)
+
+        db.session.commit()
+
+
+=======
+>>>>>>> 133efad23439ddc0d3052c8288b5694b0a8607cb
         # Render the template with the ranking results
         return render_template('form_adj.html', 
                                categories=categories.keys(),
