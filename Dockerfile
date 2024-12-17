@@ -1,29 +1,34 @@
+# Usa Python 3.8 como imagen base
 FROM python:3.8
 
-# Instalar dependencias del sistema necesarias para compilar librerías
+# Instalar dependencias del sistema necesarias para numpy y pandas
 RUN apt-get update && apt-get install -y \
     build-essential \
-    gcc \
+    gfortran \
+    libatlas-base-dev \
     libssl-dev \
     libffi-dev \
     python3-dev \
-    libatlas-base-dev \
-    gfortran
+    wget \
+    && apt-get clean
+
+# Actualizar pip
+RUN python -m pip install --upgrade pip
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo requirements.txt primero
+# Copiar el archivo requirements.txt
 COPY requirements.txt /app/requirements.txt
 
-# Instalar las dependencias de Python
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del código al contenedor
+# Copiar el resto de los archivos del proyecto
 COPY . /app
 
-# Exponer el puerto que usa la aplicación
+# Exponer el puerto 5000
 EXPOSE 5000
 
-# Ejecutar la aplicación
-CMD ["python", "app.py"]
+# Comando para ejecutar la aplicación
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
