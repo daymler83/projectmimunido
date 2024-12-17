@@ -41,6 +41,15 @@
 <body>
 
 <div class="container">
+
+    <div class="form-group">
+        <label for="sectorSelect">Select Sector</label>
+        <select class="form-select" id="sectorSelect" required>
+            <option value="Manufacturing" selected>Manufacturing</option>
+            <option value="Mining">Mining</option>
+        </select>
+    </div>
+
     <!-- Select Category -->
     <div class="form-group">
         <label for="categorySelect">Select Category</label>
@@ -48,10 +57,12 @@
             <option value="">-- Select Category --</option>
         </select>
     </div>
+    
 
     <!-- Table for inputting indicator values -->
     <form method="POST" action="/process_data">
         <!-- Hidden input to capture the selected category -->
+        <input type="hidden" id="selectedSectorInput" name="sector" value="{{ sector }}">
         <input type="hidden" id="selectedCategoryInput" name="category" value="{{ selected_category }}">
 
         <div id="inputTable" class="{% if not selected_category %}hidden{% endif %}">
@@ -117,6 +128,18 @@
     const tableBody = document.getElementById('tableBody');
     const selectedCategoryInput = document.getElementById('selectedCategoryInput');
 
+    const sectorSelect = document.getElementById('sectorSelect');
+    const selectedSectorInput = document.getElementById('selectedSectorInput');
+
+
+    // Sincronizar el valor del sector seleccionado al cargar la página
+   
+
+    sectorSelect.addEventListener('change', function () {
+        selectedSectorInput.value = this.value; // Actualiza el valor del input oculto
+        window.location.href = `/process_data?sector=${this.value}`; // Recargar la página con el sector seleccionado
+    });
+
     // Group ordering
     const groupOrder = [
         "Strategic", "Output", "Intermediate Consumption", 
@@ -125,8 +148,10 @@
         "Automation and Artificial Intelligence"
     ];
 
+   
     // Function to create table rows based on selected category
     function createTableRows(indicators) {
+        console.log("Indicadores para la tabla:", indicators);
         tableBody.innerHTML = '';  // Clear previous rows
         indicators.forEach(indicator => {
             const row = document.createElement('tr');
@@ -154,37 +179,46 @@
         });
     }
 
+    if (categorySelect.value) {
+    createTableRows(data[categorySelect.value]);
+    }
+
     // Function to populate category dropdown in the correct order
     function populateCategoryDropdown() {
-        let isCategorySelected = false; // Track if any category is selected
+    // Limpia las opciones previas del dropdown
+        categorySelect.innerHTML = '';
+        console.log("Poblando categorías con los datos:", data);
 
-        groupOrder.forEach(function (category) {
-            if (data[category]) {  // Only add categories that exist in the data
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = category;
+        let isCategorySelected = false; // Variable para verificar si alguna categoría está seleccionada
 
-                // Make "Strategic" the default if no category is selected
-                if (!selectedCategoryInput.value && category === "Strategic") {
-                    option.selected = true;
-                    selectedCategoryInput.value = "Strategic";  // Set hidden input value
-                    isCategorySelected = true;
-                    createTableRows(data["Strategic"]);  // Populate table with Strategic by default
-                } else if (selectedCategoryInput.value === category) {
-                    option.selected = true;  // Retain the selected category on form submission
-                    isCategorySelected = true;
-                }
+        // Itera sobre las categorías disponibles en los datos
+        Object.keys(data).forEach(function (category, index) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
 
-                categorySelect.appendChild(option);
+            // Selecciona la primera categoría disponible como predeterminada si ninguna está seleccionada
+            if (!selectedCategoryInput.value && index === 0) {
+                option.selected = true;
+                selectedCategoryInput.value = category; // Actualiza el input oculto con la categoría seleccionada
+                isCategorySelected = true;
+                createTableRows(data[category]); // Llena la tabla con los indicadores de esta categoría
+            } else if (selectedCategoryInput.value === category) {
+                option.selected = true; // Mantiene seleccionada la categoría enviada en el form
+                isCategorySelected = true;
             }
+
+            categorySelect.appendChild(option);
         });
 
-        // If no category is selected, set "Strategic" as the default category
-        if (!isCategorySelected && data["Strategic"]) {
-            selectedCategoryInput.value = "Strategic";
-            createTableRows(data["Strategic"]);  // Populate the table with Strategic indicators
+        // Si no se seleccionó ninguna categoría, elige la primera disponible
+        if (!isCategorySelected && Object.keys(data).length > 0) {
+            const firstCategory = Object.keys(data)[0]; // Toma la primera categoría disponible
+            selectedCategoryInput.value = firstCategory;
+            createTableRows(data[firstCategory]); // Llena la tabla con los indicadores de esta categoría
         }
     }
+
 
     // Event listener for category selection
     categorySelect.addEventListener('change', function () {
@@ -212,6 +246,15 @@
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentSector = document.getElementById('selectedSectorInput').value;
+        const sectorSelect = document.getElementById('sectorSelect');
+        sectorSelect.value = currentSector; // Establece el valor actual en el dropdown
+        console.log("Sector sincronizado en el dropdown:", sectorSelect.value);
+    });
+
+
 </script>
 
 </body>

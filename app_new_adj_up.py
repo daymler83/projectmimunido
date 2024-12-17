@@ -49,6 +49,8 @@ else:
 # Agrupar los indicadores por categoría
 categories = df.groupby('Category')['Indicator'].apply(list).to_dict()
 
+sector_categories = df.groupby(['Sector', 'Category'])['Indicator'].apply(list).to_dict()
+
 # Función para procesar los datos del formulario (para Page 3 - Ranking)
 def process_indicator_data(user_input_data, indicators):
     data_matrix = np.array(user_input_data)
@@ -154,7 +156,7 @@ def home():
     selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()]
     selected_indicators = selected_indicators or []
     return render_template(
-        'index_indi_adj.html', 
+        'index_indi_adj_up.html', 
         categories=categories, 
         show_presentation=True, 
         selected_indicators=selected_indicators
@@ -162,25 +164,78 @@ def home():
 
 
 # Route to render Page 2 (back from Page 3)
+'''
+@app.route('/indicator_list', methods=['GET'])
+def indicators_list():
+
+    sector = request.args.get('sector', 'Manufacturing')
+    filtered_categories = {
+        category: indicators
+        for (sec, category), indicators in sector_categories.items()
+        if sec == sector
+    }
+
+    selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()] or []
+
+   
+   
+    return render_template(
+        'index_indi_adj_up.html',
+        categories=filtered_categories,
+        sector=sector,
+        selected_indicators=selected_indicators,
+        show_presentation=False,
+    )
+'''
 
 @app.route('/indicator_list', methods=['GET'])
 def indicators_list():
+    sector = request.args.get('sector', 'Manufacturing')
+    print(f"Sector recibido: {sector}")  # Depuración: imprime el sector recibido
+
+    # Filtrar las categorías según el sector
+    filtered_categories = {
+        category: indicators
+        for (sec, category), indicators in sector_categories.items()
+        if sec == sector
+    }
+    print(f"Categorías filtradas: {filtered_categories}")  # Depuración: imprime las categorías filtradas
+
+    # Obtener indicadores seleccionados de la base de datos
     selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()] or []
+    print(f"Indicadores seleccionados: {selected_indicators}")  # Depuración: imprime los indicadores seleccionados
+
     return render_template(
-        'index_indi_adj.html',
-        categories=categories,
+        'index_indi_adj_up.html',
+        categories=filtered_categories,
+        sector=sector,
+        selected_indicators=selected_indicators,
         show_presentation=False,
-        selected_indicators=selected_indicators
     )
+
 
 '''
 def indicators_list():
     return render_template('index_indi_adj.html', categories=categories, show_presentation=False)  # Replace with your Page 2 template
 '''
 # Route para obtener las categorías e indicadores para los dropdowns en la página 2
+'''
 @app.route('/indicators')
 def get_indicators():
     return jsonify(categories)
+'''
+
+@app.route('/indicators', methods=['GET'])
+def get_indicators():
+    sector = request.args.get('sector', 'Manufacturing')  # Valor por defecto
+    filtered_categories = {
+        category: indicators
+        for (sec, category), indicators in sector_categories.items()
+        if sec == sector
+    }
+    return jsonify(filtered_categories)
+
+
 
 # Route para obtener información detallada sobre un indicador seleccionado (Página 2)
 @app.route('/get_indicator_info', methods=['POST'])
@@ -197,20 +252,58 @@ def get_indicator_info():
     return jsonify({"error": "Indicator not found"}), 404
 
 # Route para procesar datos para la página 3 (Ranking)
-# Route to process data for the ranking page
+
 @app.route('/process_data', methods=['POST', 'GET'])
 def process_data():
+
+    # Obtener el sector seleccionado de la URL (Manufacturing por defecto)
+    sector = request.args.get('sector', 'Manufacturing')
+
+   
+    filtered_categories = {
+        category: indicators
+        for (sec, category), indicators in sector_categories.items()
+        if sec == sector
+    }
+
+    print(f"Sector seleccionado: {sector}")
+    print(f"Categorías filtradas para el sector {sector}: {filtered_categories}")
+
+     # Si no hay categorías para el sector, maneja el caso vacío
+    if not filtered_categories:
+        return render_template(
+            'form_adj_up.html',
+            categories=[],
+            selected_category=None,
+            categories_json={}
+        )
+
     if request.method == 'GET':
-        selected_category = list(categories.keys())[0]  # Display the first category by default
-        return render_template('form_adj.html', 
-                               categories=categories.keys(), 
+        selected_category = list(filtered_categories.keys())[0]  # Display the first category by default
+        return render_template('form_adj_up.html', 
+                               categories=filtered_categories.keys(), 
                                selected_category=selected_category, 
-                               categories_json=categories)
+                               categories_json=filtered_categories,
+                               sector=sector)
+
 
     elif request.method == 'POST':
+
+        # Obtener el sector seleccionado del formulario
+        sector = request.form['sector']  # Esto asegura que tomas el sector del formulario POST
+        print(f"Sector recibido en el POST: {sector}")
+
+        # Refiltrar categorías basadas en el sector
+        filtered_categories = {
+            category: indicators
+            for (sec, category), indicators in sector_categories.items()
+            if sec == sector
+        }
+
+
         # Process POST data
         selected_category = request.form['category']
-        indicators_list = categories[selected_category]
+        indicators_list = filtered_categories[selected_category]
         
         user_input_data = []
         for indicator in indicators_list:
@@ -255,10 +348,10 @@ def process_data():
 
 
         # Render the template with the ranking results
-        return render_template('form_adj.html', 
-                               categories=categories.keys(),
+        return render_template('form_adj_up.html', 
+                               categories=filtered_categories.keys(),
                                selected_category=selected_category,
-                               categories_json=categories,
+                               categories_json=filtered_categories,
                                ranking=df_ranking.to_html())  # Pass the ranking as HTML
 
 # Nuevas rutas para las pestañas adicionales
@@ -268,7 +361,7 @@ def process_data():
 def high_priority_indicators():
     # Aquí puedes personalizar los datos que deseas mostrar en esta página
     high_priority_data = categories.get("High Priority", [])  # Puedes cambiar esto para mostrar datos específicos
-    return render_template('high_priority.html', indicators=high_priority_data)
+    return render_template('high_priority_up.html', indicators=high_priority_data)
 
 # Ruta para la página de Method of Shortlisting
 @app.route('/method')
@@ -278,14 +371,14 @@ def method():
     with open(method_file_path, 'r', encoding='utf-8') as file:
         method_content = Markup(file.read())  # Markup permite que el HTML se renderice correctamente
 
-    return render_template('method.html', method_content=method_content)
+    return render_template('method_up.html', method_content=method_content)
 
 # Ruta para la página de Documentation (abrir archivos PDF o Word)
 @app.route('/documentation')
 def documentation():
     # Enviar archivos para ser descargados o visualizados
     # Aquí puedes agregar archivos reales para la documentación
-    return render_template('documentation.html')
+    return render_template('documentation_up.html')
 
 
     # Devolver la tabla de ranking
