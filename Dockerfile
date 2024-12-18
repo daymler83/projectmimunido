@@ -1,5 +1,5 @@
 # Usa Python 3.8 como imagen base
-FROM python:3.8
+FROM python:3.9
 
 # Instalar dependencias del sistema necesarias para numpy y pandas
 RUN apt-get update && apt-get install -y \
