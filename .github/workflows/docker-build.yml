@@ -32,6 +32,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: daymler83/projectmimunido:latest
+          tags: daymler83/projectmimunido:latest #Aquí está mi app
 
 
