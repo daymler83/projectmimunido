@@ -32,6 +32,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: daymler83/projectmimunido:latest  # Cambia 'daymler83' por tu usuario de Docker Hub
+          tags: daymler83/projectmimunido:latest
 
 
