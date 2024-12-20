@@ -209,10 +209,10 @@
     <!-- Right Sidebar with Buttons -->
     <div class="right-sidebar hidden" id="sidebar">
         <button class="btn btn-light" id="goToPage2">KPI Details</button>
-        <button class="btn btn-light" onclick="window.location.href='/high_priority_indicators';">High Priority Indicators</button>
-        <button class="btn btn-light" id="goToPage3" onclick="window.location.href='/process_data';">Shortlisting Process</button>
-        <button class="btn btn-light" onclick="window.location.href='/method';">Method for Shortlisting</button>
-        <button class="btn btn-light" onclick="window.location.href='/documentation';">Documentation</button>
+        <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/high_priority_indicators';">High Priority Indicators</button>
+        <button class="btn btn-light" id="goToPage3" onclick="window.location.href='/projects/mimunido/process_data';">Shortlisting Process</button>
+        <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/method';">Method for Shortlisting</button>
+        <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/documentation';">Documentation</button>
     </div>
 
     <!-- Page 1: List of Indicators by Category in Grid Layout -->
@@ -280,7 +280,7 @@
         console.log("Sector seleccionado:", selectedSector); // Depuración
 
         // Fetch para obtener datos del sector
-        fetch(`/indicators?sector=${selectedSector}`)
+        fetch(`/projects/mimunido/indicators?sector=${selectedSector}`)
             .then(response => response.json())
             .then(data => {
                 console.log("Datos recibidos:", data); // Depuración
@@ -379,7 +379,7 @@
         const selectedSector = this.value;
 
         // Hacer fetch para obtener los indicadores del sector seleccionado
-        fetch(`/indicators?sector=${selectedSector}`)
+        fetch(`/projects/mimunido/indicators?sector=${selectedSector}`)
             .then(response => response.json())
             .then(data => {
                 const indicatorGrid = document.getElementById('indicatorGrid');
@@ -414,7 +414,7 @@
          
 
     // Fetch indicators and populate both the grid and dropdowns
-    fetch('/indicators')
+    fetch('/projects/mimunido/indicators')
         .then(response => response.json())
         .then(data => {
             const indicatorGrid = document.getElementById('indicatorGrid');
@@ -483,7 +483,7 @@
             indicatorSelect.addEventListener('change', function () {
                 const selectedIndicator = this.value;
                 if (selectedIndicator) {
-                    fetch('/get_indicator_info', {
+                    fetch('/projects/mimunido/get_indicator_info', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

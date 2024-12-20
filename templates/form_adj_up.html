@@ -60,7 +60,7 @@
     
 
     <!-- Table for inputting indicator values -->
-    <form method="POST" action="/process_data">
+    <form method="POST" action="/projects/mimunido/process_data">
         <!-- Hidden input to capture the selected category -->
         <input type="hidden" id="selectedSectorInput" name="sector" value="{{ sector }}">
         <input type="hidden" id="selectedCategoryInput" name="category" value="{{ selected_category }}">
@@ -112,10 +112,10 @@
      <!-- Buttons for exporting and navigating back -->
     <div class="buttons-container">
     <!-- Button to go back to Page 2 -->
-        <a href="/indicator_list" class="btn btn-secondary mt-3">Back to List Page</a>
+        <a href="/projects/mimunido/indicator_list" class="btn btn-secondary mt-3">Back to List Page</a>
     
     <!-- Button to export data as CSV -->
-        <a href="/export_data" class="btn btn-success mt-3">Export data</a>
+        <a href="/projects/mimunido/export_data" class="btn btn-success mt-3">Export data</a>
     </div>
 </div>
 
@@ -137,7 +137,7 @@
 
     sectorSelect.addEventListener('change', function () {
         selectedSectorInput.value = this.value; // Actualiza el valor del input oculto
-        window.location.href = `/process_data?sector=${this.value}`; // Recargar la página con el sector seleccionado
+        window.location.href = `/projects/mimunido/process_data?sector=${this.value}`; // Recargar la página con el sector seleccionado
     });
 
     // Group ordering

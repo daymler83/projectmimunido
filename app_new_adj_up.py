@@ -40,7 +40,8 @@ with app.app_context():
     db.create_all()
 
 # Cargar el archivo Excel una sola vez
-csv_file_path = os.path.join(os.getcwd(), 'indicators.xlsx')
+#csv_file_path = os.path.join(os.getcwd(), 'indicators.xlsx')
+csv_file_path = os.path.join(os.path.dirname(__file__), 'indicators.xlsx')
 if os.path.exists(csv_file_path):
     df = pd.read_excel(csv_file_path)
 else:
@@ -73,7 +74,7 @@ def process_indicator_data(user_input_data, indicators):
 
 # Ruta para exportar los datos guardados a CSV
 
-@app.route('/export_data')
+@app.route('/projects/mimunido/export_data')
 def export_data():
     # Obtener todos los datos de la base de datos
     data = IndicatorData.query.all()
@@ -114,44 +115,8 @@ def export_data():
     # Enviar el archivo CSV para su descarga
     return send_file(output, mimetype='text/csv', as_attachment=True, download_name='indicator_data_with_ranking.csv')
 
-
-
-"""
-
-def export_data():
-    # Obtener todos los datos de la base de datos
-    data = IndicatorData.query.all()
-
-    # Convertir los datos en un DataFrame de pandas
-    rows = [{
-        'category': d.category,
-        'indicator': d.indicator,
-        'relevance': d.relevance,
-        'data_availability': d.data_availability,
-        'data_quality': d.data_quality,
-        'policy_importance': d.policy_importance,
-        'timestamp': d.timestamp
-    } for d in data]
     
-    df = pd.DataFrame(rows)
-
-    # Crear un archivo CSV en memoria
-    output = io.BytesIO()
-    df.to_csv(output, index=False)
-    output.seek(0)
-
-    # Enviar el archivo CSV para su descarga
-    return send_file(output, mimetype='text/csv', as_attachment=True, download_name='indicator_data.csv')
-"""
-
-
-'''
-@app.route('/')
-def home():
-    return render_template('index_indi_adj.html', categories=categories, show_presentation=True)
-'''
-    
-@app.route('/')
+@app.route('/projects/mimunido/')
 def home():
     selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()]
     selected_indicators = selected_indicators or []
@@ -163,32 +128,7 @@ def home():
     )
 
 
-# Route to render Page 2 (back from Page 3)
-'''
-@app.route('/indicator_list', methods=['GET'])
-def indicators_list():
-
-    sector = request.args.get('sector', 'Manufacturing')
-    filtered_categories = {
-        category: indicators
-        for (sec, category), indicators in sector_categories.items()
-        if sec == sector
-    }
-
-    selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()] or []
-
-   
-   
-    return render_template(
-        'index_indi_adj_up.html',
-        categories=filtered_categories,
-        sector=sector,
-        selected_indicators=selected_indicators,
-        show_presentation=False,
-    )
-'''
-
-@app.route('/indicator_list', methods=['GET'])
+@app.route('/projects/mimunido/indicator_list', methods=['GET'])
 def indicators_list():
     sector = request.args.get('sector', 'Manufacturing')
     print(f"Sector recibido: {sector}")  # Depuración: imprime el sector recibido
@@ -214,18 +154,7 @@ def indicators_list():
     )
 
 
-'''
-def indicators_list():
-    return render_template('index_indi_adj.html', categories=categories, show_presentation=False)  # Replace with your Page 2 template
-'''
-# Route para obtener las categorías e indicadores para los dropdowns en la página 2
-'''
-@app.route('/indicators')
-def get_indicators():
-    return jsonify(categories)
-'''
-
-@app.route('/indicators', methods=['GET'])
+@app.route('/projects/mimunido/indicators', methods=['GET'])
 def get_indicators():
     sector = request.args.get('sector', 'Manufacturing')  # Valor por defecto
     filtered_categories = {
@@ -238,7 +167,7 @@ def get_indicators():
 
 
 # Route para obtener información detallada sobre un indicador seleccionado (Página 2)
-@app.route('/get_indicator_info', methods=['POST'])
+@app.route('/projects/mimunido/get_indicator_info', methods=['POST'])
 def get_indicator_info():
     indicator_name = request.json['indicator']
     indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
@@ -253,7 +182,7 @@ def get_indicator_info():
 
 # Route para procesar datos para la página 3 (Ranking)
 
-@app.route('/process_data', methods=['POST', 'GET'])
+@app.route('/projects/mimunido/process_data', methods=['POST', 'GET'])
 def process_data():
 
     # Obtener el sector seleccionado de la URL (Manufacturing por defecto)
@@ -357,14 +286,14 @@ def process_data():
 # Nuevas rutas para las pestañas adicionales
 
 # Ruta para la página de High Priority Indicators
-@app.route('/high_priority_indicators')
+@app.route('/projects/mimunido/high_priority_indicators')
 def high_priority_indicators():
     # Aquí puedes personalizar los datos que deseas mostrar en esta página
     high_priority_data = categories.get("High Priority", [])  # Puedes cambiar esto para mostrar datos específicos
     return render_template('high_priority_up.html', indicators=high_priority_data)
 
 # Ruta para la página de Method of Shortlisting
-@app.route('/method')
+@app.route('/projects/mimunido/method')
 def method():
     # Lee el contenido desde el archivo HTML
     method_file_path = os.path.join(app.root_path, 'static', 'method_content.html')
@@ -374,7 +303,7 @@ def method():
     return render_template('method_up.html', method_content=method_content)
 
 # Ruta para la página de Documentation (abrir archivos PDF o Word)
-@app.route('/documentation')
+@app.route('/projects/mimunido/documentation')
 def documentation():
     # Enviar archivos para ser descargados o visualizados
     # Aquí puedes agregar archivos reales para la documentación

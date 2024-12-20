@@ -1,34 +1,20 @@
-# Usa Python 3.8 como imagen base
+# Use Python 3.9 as base image
 FROM python:3.9
 
-# Instalar dependencias del sistema necesarias para numpy y pandas
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gfortran \
-    libatlas-base-dev \
-    libssl-dev \
-    libffi-dev \
-    python3-dev \
-    wget \
-    && apt-get clean
-
-# Actualizar pip
-RUN python -m pip install --upgrade pip
-
-# Establecer el directorio de trabajo
+# Set the working directory
 WORKDIR /app
 
-# Copiar el archivo requirements.txt
-COPY requirements.txt /app/requirements.txt
+# Copy the requirements.txt file to the correct path
+COPY requirements.txt /app/projects/mimunido/requirements.txt
 
-# Instalar dependencias de Python
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /app/projects/mimunido/requirements.txt
 
-# Copiar el resto de los archivos del proyecto
-COPY . /app
+# Copy the rest of the application files to the project folder
+COPY . /app/projects/mimunido
 
-# Exponer el puerto 5000
+# Expose the port Flask will run on
 EXPOSE 5000
 
-# Comando para ejecutar la aplicación
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app_new_adj_up:app"]
+# Command to run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "projects.mimunido.app_new_adj_up:app"]
