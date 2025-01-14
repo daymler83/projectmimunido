@@ -169,8 +169,11 @@ def get_indicators():
 # Route para obtener información detallada sobre un indicador seleccionado (Página 2)
 @app.route('/projects/mimunido/get_indicator_info', methods=['POST'])
 def get_indicator_info():
+    sector = request.json.get('sector', 'Manufacturing')  # Default to Manufacturing
     indicator_name = request.json['indicator']
-    indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
+    #indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
+
+    indicator_row = df[(df['Sector'] == sector) & (df['Indicator'] == indicator_name)].iloc[0]
 
     if indicator_row is not None:
         return jsonify({

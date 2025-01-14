@@ -177,6 +177,58 @@
             color: white;
         }
 
+        /* Alinear los selectores horizontalmente con tamaño uniforme */
+        .grid-layout {
+            display: flex; /* Disposición en fila */
+            flex-direction: row; /* Elementos en línea horizontal */
+            justify-content: flex-start; /* Alinear a la izquierda */
+            align-items: center; /* Centrar verticalmente */
+            gap: 20px; /* Espaciado entre los selectores */
+            margin-bottom: 20px; /* Separación inferior */
+        }
+
+        /* Selectores con tamaño uniforme */
+        #sectorSelectDetails,
+        #categorySelect,
+        #indicatorSelect {
+            width: 300px; /* Ancho fijo para uniformidad */
+            font-size: 1.2rem; /* Tamaño de fuente grande */
+            padding: 8px; /* Espaciado interno */
+            border-radius: 6px; /* Bordes redondeados */
+            border: 1px solid #007bff; /* Borde azul */
+        }
+
+        /* Etiquetas alineadas con los selectores */
+        label.form-label {
+            font-size: 1rem; /* Tamaño de fuente consistente */
+            font-weight: bold; /* Texto destacado */
+            color: #333; /* Color oscuro */
+            margin-bottom: 5px; /* Espaciado entre etiqueta y selector */
+        }
+
+        /* Estilo del recuadro de detalles */
+        #indicatorDetails {
+            padding: 20px; /* Espaciado interno */
+            margin-top: 20px; /* Separación superior */
+            border: 1px solid #007bff; /* Borde azul */
+            background-color: #f0f8ff; /* Fondo azul claro */
+            border-radius: 8px; /* Bordes redondeados */
+            font-size: 1.2rem; /* Tamaño de fuente grande */
+            line-height: 1.5; /* Espaciado entre líneas */
+            color: #333; /* Color oscuro */
+            max-height: 300px; /* Altura máxima del recuadro */
+            overflow-y: auto; /* Scroll vertical si el contenido es demasiado largo */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para un diseño elegante */
+        }
+
+        /* Ajuste del botón */
+        button {
+            margin-top: 20px; /* Separación superior para el botón */
+            font-size: 1.1rem; /* Tamaño de fuente aumentado */
+            padding: 10px 20px; /* Espaciado interno */
+            border-radius: 6px; /* Bordes redondeados */
+        }
+
 
     </style>
 </head>
@@ -196,15 +248,13 @@
     <div class="navbar hidden" id="navbar">
         <div class="d-flex justify-content-between align-items-center">
             <h2>Long list of indicators by groups</h2>
-            <!-- Dropdown to select sector -->
-            <select id="sectorSelect" class="form-select w-auto" onchange="updateSector()">
+            <select id="sectorSelect" class="form-select w-auto" onchange="updateSectorInDetail()">
                 <option value="Manufacturing" {% if sector == 'Manufacturing' %}selected{% endif %}>Manufacturing</option>
                 <option value="Mining" {% if sector == 'Mining' %}selected{% endif %}>Mining</option>
             </select>
         </div>
     </div>
-    
-    
+        
 
     <!-- Right Sidebar with Buttons -->
     <div class="right-sidebar hidden" id="sidebar">
@@ -241,6 +291,14 @@
     <!-- Page 2: Filter Indicators by Category and Show Details -->
     <div id="page2" class="hidden content-page2">
         <h4 class="section-title"></h4>
+
+        <div class="mb-3">
+            <label for="sectorSelectDetails" class="form-label">Select Sector</label>
+            <select class="form-select" id="sectorSelectDetails">
+                <option value="Manufacturing" selected>Manufacturing</option>
+                <option value="Mining">Mining</option>
+            </select>
+        </div>
         
         <div class="grid-layout">
             <!-- Left side: Dropdowns for selecting category and indicator -->
@@ -374,7 +432,7 @@
     
    
         // Lógica para actualizar indicadores según el sector seleccionado
-    const sectorSelect = document.getElementById('sectorSelect');
+    const sectorSelectDetails = document.getElementById('sectorSelectDetails');
     sectorSelect.addEventListener('change', function () {
         const selectedSector = this.value;
 
@@ -382,6 +440,9 @@
         fetch(`/projects/mimunido/indicators?sector=${selectedSector}`)
             .then(response => response.json())
             .then(data => {
+                console.log("Datos recibidos para el sector:", data);
+
+
                 const indicatorGrid = document.getElementById('indicatorGrid');
                 indicatorGrid.innerHTML = ''; // Limpiar contenido previo del grid
 
@@ -410,9 +471,137 @@
                     }
                 });
             });
+            
     });
-         
 
+
+    // Fetch inicial para cargar indicadores de Manufacturing por defecto
+    console.log('Script de KPI Details cargado correctamente');
+
+    // Obtener elementos HTML clave
+    const categorySelect = document.getElementById('categorySelect');
+    const indicatorSelect = document.getElementById('indicatorSelect');
+    const indicatorDetails = document.getElementById('indicatorDetails');
+    const indicatorGrid = document.getElementById('indicatorGrid');
+
+    // Variable global para almacenar datos del sector actual
+    let currentSectorData = {};
+
+    // Función para actualizar la interfaz según los datos del sector seleccionado
+    const updateUI = (sectorData) => {
+        console.log('Actualizando UI con datos:', sectorData);
+
+        // Guardar datos del sector actual
+        currentSectorData = sectorData;
+
+        // Limpiar contenido previo
+        indicatorGrid.innerHTML = '';
+        categorySelect.innerHTML = '<option value="">-- Select Category --</option>';
+        indicatorSelect.innerHTML = '<option value="">-- Select Indicator --</option>';
+        indicatorSelect.disabled = true;
+        indicatorDetails.style.display = 'none';
+
+        // Iterar en groupOrder para mantener el orden de categorías
+        groupOrder.forEach(category => {
+            if (sectorData[category]) {
+                // Actualizar el grid
+                const categoryBlock = document.createElement('div');
+                categoryBlock.className = 'grid-item';
+
+                const categoryTitle = document.createElement('h5');
+                categoryTitle.textContent = category;
+                categoryBlock.appendChild(categoryTitle);
+
+                const ul = document.createElement('ul');
+                sectorData[category].forEach(indicator => {
+                    const li = document.createElement('li');
+                    li.textContent = indicator;
+                    ul.appendChild(li);
+                });
+                categoryBlock.appendChild(ul);
+                indicatorGrid.appendChild(categoryBlock);
+
+                // Agregar categoría al dropdown
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            }
+        });
+    };
+
+    // Función para cargar datos de un sector específico
+    const fetchAndUpdateSector = (sector) => {
+        console.log('Cargando datos para el sector:', sector);
+        fetch(`/projects/mimunido/indicators?sector=${sector}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Datos recibidos para el sector:', sector, data);
+                updateUI(data); // Actualizar la UI con los datos recibidos
+            })
+            .catch(error => {
+                console.error('Error al obtener datos del sector seleccionado:', error);
+            });
+    };
+
+    // Evento: Cargar datos al cambiar el sector
+    sectorSelectDetails.addEventListener('change', function () {
+        const selectedSector = this.value;
+        fetchAndUpdateSector(selectedSector); // Cargar los datos del sector seleccionado
+    });
+
+    // Evento: Actualizar indicadores al cambiar la categoría
+    categorySelect.addEventListener('change', function () {
+        const selectedCategory = this.value;
+
+        if (selectedCategory && currentSectorData[selectedCategory]) {
+            const indicators = currentSectorData[selectedCategory];
+            indicatorSelect.innerHTML = '<option value="">-- Select Indicator --</option>';
+            indicatorSelect.disabled = false;
+
+            indicators.forEach(indicator => {
+                const option = document.createElement('option');
+                option.value = indicator;
+                option.textContent = indicator;
+                indicatorSelect.appendChild(option);
+            });
+        } else {
+            indicatorSelect.disabled = true;
+            indicatorDetails.style.display = 'none';
+        }
+    });
+
+    // Evento: Mostrar detalles al seleccionar un indicador
+    indicatorSelect.addEventListener('change', function () {
+        const selectedIndicator = this.value;
+        const selectedSector = sectorSelectDetails.value;
+
+        if (selectedIndicator) {
+            fetch('/projects/mimunido/get_indicator_info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ indicator: selectedIndicator, sector: selectedSector })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Detalles del indicador recibido:', data);
+                    document.getElementById('rationale').textContent = data.Rationale || 'N/A';
+                    document.getElementById('formula').textContent = data.Formula || 'N/A';
+                    document.getElementById('source').textContent = data.Source || 'N/A';
+                    indicatorDetails.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error al obtener detalles del indicador:', error);
+                });
+        } else {
+            indicatorDetails.style.display = 'none';
+        }
+    });
+
+// Cargar datos iniciales (Manufacturing por defecto)
+fetchAndUpdateSector('Manufacturing');
+
+    /*
     // Fetch indicators and populate both the grid and dropdowns
     fetch('/projects/mimunido/indicators')
         .then(response => response.json())
@@ -482,13 +671,21 @@
             // Fetch and display indicator details when an indicator is selected
             indicatorSelect.addEventListener('change', function () {
                 const selectedIndicator = this.value;
+                const selectedSector = document.getElementById('sectorSelect').value; // Get the selected sector
+
+
                 if (selectedIndicator) {
                     fetch('/projects/mimunido/get_indicator_info', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ indicator: selectedIndicator })
+                        body: JSON.stringify({ 
+
+                            indicator: selectedIndicator, 
+                            sector: selectedSector // Pass the selected sector
+
+                         })
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -503,7 +700,8 @@
                 }
 
             });
-        });
+        });*/
+
 </script>
 </body>
 </html>
