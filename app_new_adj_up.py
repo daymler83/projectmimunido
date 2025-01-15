@@ -167,12 +167,47 @@ def get_indicators():
 
 
 # Route para obtener información detallada sobre un indicador seleccionado (Página 2)
+#@app.route('/projects/mimunido/get_indicator_info', methods=['POST'])
+
+# Route para obtener información detallada sobre un indicador seleccionado (Página 2)
 @app.route('/projects/mimunido/get_indicator_info', methods=['POST'])
 def get_indicator_info():
     sector = request.json.get('sector', 'Manufacturing')  # Default to Manufacturing
     indicator_name = request.json['indicator']
-    #indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
+    print(f"Request recibido: Sector = {sector}, Indicator = {indicator_name}")
 
+    try:
+        # Filtrar por sector e indicador
+        indicator_row = df[(df['Sector'] == sector) & (df['Indicator'] == indicator_name)].iloc[0]
+        print("Datos filtrados para tabla de detalles:", indicator_row)
+
+        # Crear estructura de datos para la tabla
+        return jsonify({
+            "Indicator code": indicator_row.get('Code', 'N/A'),
+            "Dimension": indicator_row.get('Category', 'N/A'),
+            "Indicator name": indicator_row.get('Indicator', 'N/A'),
+            "Description": indicator_row.get('Rationale', 'N/A'),
+            "Directionality": indicator_row.get('Directionality', 'N/A'),
+            "Owner": indicator_row.get('Owner', 'N/A'),
+            "Coordinator": indicator_row.get('Coordinator', 'N/A'),
+            "Calculation methodology/Formula": indicator_row.get('Formula', 'N/A'),
+            "Disaggregation": indicator_row.get('Disaggregation', 'N/A'),
+            "Units": indicator_row.get('Units', 'N/A'),
+            "Reporting frequency": indicator_row.get('Reporting frequency', 'N/A'),
+            "Date of data availability": indicator_row.get('Date of data availability', 'N/A'),
+            "Data source": indicator_row.get('Source', 'N/A')
+        })
+
+    except IndexError:
+        print("No se encontraron datos para el filtro aplicado.")  
+        return jsonify({"error": "Indicator not found"}), 404
+
+
+'''
+def get_indicator_info():
+    sector = request.json.get('sector', 'Manufacturing')  # Default to Manufacturing
+    indicator_name = request.json['indicator']
+    #indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
     indicator_row = df[(df['Sector'] == sector) & (df['Indicator'] == indicator_name)].iloc[0]
 
     if indicator_row is not None:
@@ -182,6 +217,7 @@ def get_indicator_info():
             "Source": indicator_row['Source']
         })
     return jsonify({"error": "Indicator not found"}), 404
+'''
 
 # Route para procesar datos para la página 3 (Ranking)
 
@@ -312,6 +348,10 @@ def documentation():
     # Aquí puedes agregar archivos reales para la documentación
     return render_template('documentation_up.html')
 
+@app.route('/projects/mimunido/contact')
+def contact():
+    # Page of contact
+    return render_template('contact.html')
 
     # Devolver la tabla de ranking
     return render_template('form.html', 
