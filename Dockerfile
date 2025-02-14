@@ -10,6 +10,7 @@ COPY requirements.txt /app/projects/mimunido/requirements.txt
 # Install Python dependencies
 RUN pip install --no-cache-dir -r /app/projects/mimunido/requirements.txt
 
+
 # Copy the rest of the application files to the project folder
 COPY . /app/projects/mimunido
 
