@@ -1,2 +1,2 @@
-web: gunicorn app_new_adj:app
+web: gunicorn app_new_adj_up:app
 
