@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file
+from flask import Flask, render_template, jsonify, request, send_file, send_from_directory
 from markupsafe import Markup
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -10,6 +10,10 @@ import logging
 
 
 app = Flask(__name__)
+
+@app.route('/projects/mimunido/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'projects/mimunido/static'), filename)
 
 # Configuración de la base de datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///indicators_data.db'
@@ -361,4 +365,5 @@ def contact():
                            ranking=df_ranking.to_html(classes='table table-striped'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
