@@ -5,20 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indicators Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <style>
         /* Style for the intro page (Page 0) */
-        #page0 {
-            height: 100vh;
-            background-color: #f0f8ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+
 
         #page0 h1 {
-            font-size: 5rem;
+            font-size: 3rem;
             font-weight: 700;
+            color: #002961;
+            text-align: left; margin: 0px;
         }
         
         #page0 h2 {
@@ -26,31 +25,72 @@
             font-weight: 500;
         }
 
-        #page0 p {
+        #page0 h3 {
             font-size: 1.5rem;
+            font-weight: 500; 
+            text-align: left; color: #002961;
+        }
+
+        .highlight {
+            color: #ff060a;
+        }
+
+        #page0 p {
+            font-size: 1rem;
             margin: 20px 0;
+            position: absolute;
+            bottom: 2%;
+            right: 0;
+            color: #fff;
+            display: block;
+            background: #ff060a;
+            padding: 12px;
         }
 
         #page0 button {
             padding: 10px 20px;
-            border-radius: 50px;
-            background-color: #007bff;
+            border-radius: 0px;
+            background-color: #002961;
             color: white;
             border: none;
             font-size: 1.2rem;
+            width: 142px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente (opcional) */
+        
+            color:#000000;
+            border: none;
+            cursor: pointer;
+            font-size: 16px; 
+            width: 100%;
+        }
+
+        .btn i {
+            margin-left: 15px; /* Espacio entre el icono y el texto */
+            font-size: 18px;
         }
 
         /* Style for the blue navigation bar (fixed) on Page 1 only */
         .navbar {
-            background-color: #007bff;
-            padding: 15px;
             color: white;
             text-align: center;
-            position: fixed;
             width: 100%;
             top: 0;
             left: 0;
             z-index: 1000;
+            padding:  0 16px;
+        }
+
+        .navbar h2{     
+            float: left;
+            line-height: 48px;
+            font-weight: 500;
+            font-size: 1.2em;
         }
 
         /* Space to ensure the content starts below the fixed navbar (Page 1) */
@@ -58,6 +98,9 @@
             margin-top: 80px;
         }
 
+        .container {
+            width: 100%;
+        }
         /* Grid layout for the indicators, with 3 columns */
         .grid-container {
             display: grid;
@@ -67,32 +110,52 @@
         }
 
         .grid-item {
-            padding: 20px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            background-color: #e9f4fd;
+            border-radius: 0 10px 10px;
         }
 
+        .grid-item .imageTop1, .grid-item .imageTop2, .grid-item .imageTop3, .grid-item .imageTop4, .grid-item .imageTop5, .grid-item .imageTop6, .grid-item .imageTop7, .grid-item .imageTop8, .grid-item .imageTop9, .grid-item .imageTop10, .grid-item .imageTop11{
+            height: 120px; position: relative; background-size:cover;
+        }
         .grid-item h5 {
-            color: #007bff;
-            margin-bottom: 10px;
+            color: #ffffff; /* Mantiene el texto completamente opaco */
+            position: absolute;
+            bottom: 10px; 
+            font-size: 0.75rem;
+            display: block;
+            width: 100%;
+            background: rgba(0, 41, 98, 0.7); /* Azul con 70% de opacidad */
+            padding-left: 10px;
+            padding: 10px; /* Asegura que el fondo se vea bien */
         }
 
         /* Styling the indicators list */
         .grid-item ul {
-            list-style-type: disc; /* This adds bullet points */
-            padding-left: 20px; /* Adds spacing to the left */
+            list-style-type: disc;
+            /* This adds bullet points */
+            padding-left: 20px;
+            /* Adds spacing to the left */
+            margin: 30px 21px;
         }
 
         .grid-item li {
-            margin-bottom: 5px; /* Adds some space between each list item */
+            margin-bottom: 5px;
+            /* Adds some space between each list item */
         }
+
+        .grid-item .imageTop1{
+            background-image: url('{{ image_url }}'); 
+        }
+
 
         /* Enhance the section titles */
         .section-title {
-            margin-top: 20px;
-            color: #007bff;
+            margin-top: 74px;
+            color: #ffffff;
             font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .section-title h3 { font-weight: 300;     padding: 0;
         }
 
         /* Improved button styling */
@@ -255,29 +318,349 @@
 
         /* Ajuste del botón */
         button {
-            margin-top: 20px; /* Separación superior para el botón */
-            font-size: 1.1rem; /* Tamaño de fuente aumentado */
-            padding: 10px 20px; /* Espaciado interno */
-            border-radius: 6px; /* Bordes redondeados */
+
+            font-size:0.8rem; 
+            text-align: left;
+            /* Tamaño de fuente aumentado */
+            border: none;
+            background-color: #ffffff;
+            width: 100%; 
+            text-transform: uppercase; 
         }
 
+        button .material-icons {
+            font-size: 12px; float: right;
+        }
+
+        .box {
+            flex: 1; /* Los hace elásticos */
+            padding: 0 20px;
+            text-align: center;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            height: 50vh; /* Ocupa la mitad superior de la pantalla */
+            box-sizing: border-box;
+        }
+
+        .header {
+            width: 100%;
+            height: 75px;
+            background-color: #003896;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            left: 0;
+            z-index: 1000; position: fixed;
+            display: none;
+        }
+        /* Contenedor del dropdown */
+        .custom-dropdown {
+            position: relative;
+            width: 220px;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none; float: right;
+        }
+        .dropdown-selected {
+            padding: 12px 16px;
+            font-size: 16px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        /* Opciones del dropdown */
+        .dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 2px solid #002962;
+            border-top: none;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000; 
+            margin-top: 3px;
+        }
+
+        /* Mostrar las opciones cuando está activo */
+        .custom-dropdown.active .dropdown-options {
+            display: block;
+            border-radius: 8px;
+        }
+
+        /* Opciones del dropdown */
+        .dropdown-item {
+            padding: 12px 16px;
+            font-size: 16px;
+            color: #002962;
+            transition: background 0.3s ease; border-radius: 8px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0; border-radius: 8px;
+        }
+
+        .layout-wrapper {
+            display: flex;
+            margin-top: 0px; /* Para evitar que el contenido quede detrás del header */
+        }
+
+        .sidebar {
+            z-index: 1000; /* Asegurar que aparezca sobre el contenido */
+            width: 250px;
+            height: calc(100vh - 60px); /* Resta la altura del header */
+            background-color: #ffffff;
+            position: fixed;
+            left: 0;
+            top: 75px;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Ocultar el menú en móvil */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0); z-index: 1000;
+            }
+        }
+
+        /* Estilos de los links */
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Estilos para los iconos dentro del menú */
+        .sidebar ul li a .material-icons {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Botón hamburguesa */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 8px;
+            left: 15px;
+            background: #00296C;
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1100; 
+            width: 48px;
+        }
+
+        .hamburger .material-icons {
+            font-size: 28px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+        }
+
+        /* Contenido principal */
+        .content2 {
+            margin-left: 250px; z-index: 1;
+            flex-grow: 1;
+            width: 100%; background-color: #002961;
+        }
+
+        /* @media (max-width: 768px) {
+            .content2 {
+                margin-left: 0;
+            }
+            .header {
+
+                height: auto;
+                padding: 10px 0; position: absolute;
+                
+            }
+            
+            .navbar h2 {
+                margin-top: 38px;
+                text-align: center;
+                float: none;
+                width: 100%;
+            }
+            .layout-wrapper {
+                display: flex;
+                margin-top: 0px;
+            }
+            .content2 {
+
+                padding:16px;
+
+            }
+            .section-title h3 {
+                padding: 23% 5% 0;
+            }
+            .grid-container {
+                margin: 0%; display: block;
+            }
+            .grid-item {
+                overflow: auto;
+                margin-bottom: 30px;
+            }
+
+            .section-title h3 {
+            padding: 0 5%;
+            }
+        } */
+
+        /* Diseño responsive para mobile */
+        /* @media (max-width: 768px) {
+            .contenedor {
+                height: auto; 
+            }
+            .box { 
+                width: 100%;
+            }
+            .custom-dropdown {
+                float: left;
+                width: 100%;
+            }
+        } */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
     </style>
 </head>
 <body>
+    <header class="header" id="header">
+        <div class="navbar hidden" id="navbar">
+            <h2>Long list of indicators by groups</h2>
+    
+            <div class="" id="customDropdown">
+                <select id="sectorSelect" class="form-select custom-dropdown" >
+                    <option value="Manufacturing" {% if sector == 'Manufacturing' %}selected{% endif %}>Manufacturing</option>
+                    <option value="Mining" {% if sector == 'Mining' %}selected{% endif %}>Mining</option>
+                </select>
+            </div>
+    
+            <!-- Input oculto para mantener el valor seleccionado -->
+            
+        </div>
+    </header>
+
+    <div class="layout-wrapper">
+        <nav class="sidebar hidden" id="sidebar">
+            <ul>
+                <li><button class="btn-light" onclick="window.location.href='/projects/mimunido/high_priority_indicators';">High Priority Indicators <span class="material-icons">arrow_forward</span></button></li>
+                <li><button class="btn-light" id="goToPage3" onclick="window.location.href='/projects/mimunido/process_data';">Shortlisting Process <span class="material-icons">arrow_forward</span></button></li>
+                <li><button class="btn-light" onclick="window.location.href='/projects/mimunido/method';">Method for Shortlisting <span class="material-icons">arrow_forward</span></button></li>
+                <li><button class="btn-light" onclick="window.location.href='/projects/mimunido/documentation';">Documentation <span class="material-icons">arrow_forward</span></button></li>
+                <li><button class="btn-light" onclick="window.location.href='/projects/mimunido/contact';">Contact <span class="material-icons">arrow_forward</span></button></li>
+                
+            </ul>
+        </nav>
+        <main class="content2">
+            <div class="container content mt-4 {% if show_presentation %}hidden{% endif %}" id="page1">
+                <div class="section-title">
+                    <h4>List of Indicators by Category</h4>
+                </div>
+                <!-- Contenedor de grid para indicadores-->
+                
+                <div class="grid-container" id="indicatorGrid">
+                    {% for category, indicators in categories.items() %}
+                    <div class="grid-item">
+                        <div class="imageTop1"><h5>{{ category }}</h5></div>
+                        <ul>
+                            {% for indicator in indicators %}
+                            
+                            <li>
+                                <a href="javascript:void(0);" onclick="fetchIndicatorData('{{ indicator, sector}}')">
+                                    {{ indicator }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+        
+        
+            </div>
+        </main>
+        
+
+    </div>
+
+    
+    
+
     <!-- Page 0: Introduction page with a welcome message -->
     <div id="page0" {% if not show_presentation %}style="display: none;"{% endif %}>
-        <div>
-            <h1>Industry Performance Indicators</h1>
-            <h2>Ministry of Industry and Minerals-UNIDO</h2>
-            <p id="currentDate"></p>
-            <button id="goToPage1">Explore</button>
+        <div class="content">
+            <div class="contenedor">
+                <div class="box">
+                    <h1>Industry Performance <spam class="highlight ">Indicators</spam></h1>
+                </div>
+                <div class="box">
+                    <h3>Ministry of Industry and Minerals-UNIDO</h3>
+                    <p id="currentDate"></p>
+                    <button class="btn" id="goToPage1">Explore<i class="material-icons">arrow_forward</i></button>
+                </div>
+            </div>
+            <!-- <div class="bg-image">
+                <p id="currentDate"></p>
+            </div> -->
         </div>
     </div>
+
+
+
     
     <!-- Blue navigation bar (Page 1) -->
 
-    <div class="navbar hidden" id="navbar">
+    <!-- <div class="navbar hidden" id="navbar">
         <div class="d-flex justify-content-between align-items-center">
             <h2>Long list of indicators by groups</h2>
             <select id="sectorSelect" class="form-select w-auto" onchange="updateSectorInDetail()">
@@ -285,40 +668,41 @@
                 <option value="Mining" {% if sector == 'Mining' %}selected{% endif %}>Mining</option>
             </select>
         </div>
-    </div>
+    </div> -->
         
 
     <!-- Right Sidebar with Buttons -->
-    <div class="right-sidebar hidden" id="sidebar">
+    <!-- <div class="right-sidebar hidden" id="sidebar">
         <button class="btn btn-light" id="goToPage2">KPI Details</button>
         <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/high_priority_indicators';">High Priority Indicators</button>
         <button class="btn btn-light" id="goToPage3" onclick="window.location.href='/projects/mimunido/process_data';">Shortlisting Process</button>
         <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/method';">Method for Shortlisting</button>
         <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/documentation';">Documentation</button>
         <button class="btn btn-light" onclick="window.location.href='/projects/mimunido/contact';">Contact</button>
-    </div>
+    </div> -->
 
     <!-- Page 1: List of Indicators by Category in Grid Layout -->
-    <div class="container content mt-4 main-content {% if show_presentation %}hidden{% endif %}" id="page1">
-        <div class="section-title">
-            <h4>List of Indicators by Category</h4>
-        </div>
-        <!-- Contenedor de grid para indicadores-->
-        
-        <div class="grid-container" id="indicatorGrid">
-            {% for category, indicators in categories.items() %}
-            <div class="grid-item">
-                <h5>{{ category }}</h5>
-                <ul>
-                    {% for indicator in indicators %}
-                    <li>{{ indicator }}</li>
-                    {% endfor %}
-                </ul>
+    
+
+    <div class="modal fade modal-lg" id="indicatorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Indicator Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="modalBody">
+                            <!-- Aquí se generarán las filas dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-            {% endfor %}
         </div>
-
-
     </div>
 
 
@@ -415,41 +799,98 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 
-    function updateSectorInDetail() {
-        const selectedSector = document.getElementById('sectorSelect').value;
-        console.log("Sector seleccionado:", selectedSector); // Depuración
+    // function updateSectorInDetail() {
+    //     const selectedSector = document.getElementById('sectorSelect').value;
+    //     console.log("Sector seleccionado:", selectedSector); // Depuración
 
-        // Fetch para obtener datos del sector
-        fetch(`/projects/mimunido/indicators?sector=${selectedSector}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Datos recibidos:", data); // Depuración
-                const indicatorGrid = document.getElementById('indicatorGrid');
-                indicatorGrid.innerHTML = ''; // Limpiar contenido previo
+    //     // Fetch para obtener datos del sector
+    //     fetch(`/projects/mimunido/indicators?sector=${selectedSector}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log("Datos recibidos:", data); // Depuración
+    //             const indicatorGrid = document.getElementById('indicatorGrid');
+    //             indicatorGrid.innerHTML = ''; // Limpiar contenido previo
 
-                // Actualizar el contenido del grid
-                Object.keys(data).forEach(category => {
-                    const categoryBlock = document.createElement('div');
-                    categoryBlock.className = 'grid-item';
+    //             // Actualizar el contenido del grid
+    //             Object.keys(data).forEach(category => {
+    //                 const categoryBlock = document.createElement('div');
+    //                 categoryBlock.className = 'grid-item';
 
-                    const categoryTitle = document.createElement('h5');
-                    categoryTitle.textContent = category;
-                    categoryBlock.appendChild(categoryTitle);
+    //                 const categoryTitle = document.createElement('h5');
+    //                 categoryTitle.textContent = category;
+    //                 categoryBlock.appendChild(categoryTitle);
 
-                    const ul = document.createElement('ul');
-                    data[category].forEach(indicator => {
-                        const li = document.createElement('li');
-                        li.textContent = indicator;
-                        ul.appendChild(li);
+    //                 const ul = document.createElement('ul');
+    //                 data[category].forEach(indicator => {
+    //                     const li = document.createElement('li');
+    //                     li.textContent = indicator;
+    //                     ul.appendChild(li);
+    //                 });
+    //                 categoryBlock.appendChild(ul);
+    //                 indicatorGrid.appendChild(categoryBlock);
+    //             });
+    //         })
+    //         .catch(error => console.error("Error al actualizar los indicadores:", error));
+    // }
+
+    function fetchIndicatorData(selectedIndicator, selectedSector) {
+console.log(selectedIndicator, selectedSector);
+
+        fetch('/projects/mimunido/get_indicator_info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ indicator: selectedIndicator, sector: selectedSector })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Datos recibidos para el indicador seleccionado:", data);
+                    if (data.error) {
+                        console.error(data.error);
+                        return;
+                    }
+
+                    const tableBody = document.getElementById('modalBody');
+                    tableBody.innerHTML = ''; // Limpiar contenido previo
+
+                    // Definir el orden deseado
+                    const orderedKeys = [
+                        "Indicator code",
+                        "Dimension",
+                        "Indicator name",
+                        "Description",
+                        "Directionality",
+                        "Owner",
+                        "Coordinator",
+                        "Calculation methodology/Formula",
+                        "Disaggregation",
+                        "Units",
+                        "Reporting frequency",
+                        "Date of data availability",
+                        "Data source"
+                    ];
+
+                    // Crear filas de la tabla dinámicamente
+                    orderedKeys.forEach(key => {
+                        if (data[key]) {
+                            const row = document.createElement('tr');
+                            const keyCell = document.createElement('td');
+                            keyCell.textContent = key;
+                            keyCell.style.fontWeight = 'bold'; // Resaltar las claves
+                            const valueCell = document.createElement('td');
+                            valueCell.textContent = data[key] || 'N/A'; // Mostrar 'N/A' si no hay valor
+                            row.appendChild(keyCell);
+                            row.appendChild(valueCell);
+                            tableBody.appendChild(row);
+                        }
                     });
-                    categoryBlock.appendChild(ul);
-                    indicatorGrid.appendChild(categoryBlock);
+                    const modal = new bootstrap.Modal(document.getElementById('indicatorModal'));
+                    modal.show();
+                    //document.getElementById('indicatorDetails').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error("Error al obtener los detalles del indicador:", error);
                 });
-            })
-            .catch(error => console.error("Error al actualizar los indicadores:", error));
     }
-
-
     const selectedIndicators = {{ selected_indicators | tojson | default('[]') }};
 
     const page0 = document.getElementById('page0');
@@ -457,8 +898,9 @@
     const page2 = document.getElementById('page2');
     const navbar = document.getElementById('navbar');
     const sidebar = document.getElementById('sidebar');
+    const header = document.getElementById('header');
     const goToPage1 = document.getElementById('goToPage1');
-    const goToPage2 = document.getElementById('goToPage2');
+    //const goToPage2 = document.getElementById('goToPage2');
     const goToPage3 = document.getElementById('goToPage3');
     const goToPage1FromPage2 = document.getElementById('goToPage1FromPage2');
 
@@ -472,6 +914,7 @@
             page1.classList.remove('hidden');
             navbar.classList.remove('hidden');
             sidebar.classList.remove('hidden');
+            header.style.display = 'block';
         }
 
         // Mostrar mes y año actuales en el formato deseado
@@ -482,6 +925,7 @@
         const month = monthNames[date.getMonth()];
         const year = date.getFullYear();
         currentDateElement.textContent = `${month} ${year}`;
+        const sectorSelect = document.getElementById('sectorSelect');
     });
 
     // Navegar a Page 1 desde la presentación
@@ -490,15 +934,16 @@
         page1.classList.remove('hidden');
         navbar.classList.remove('hidden');
         sidebar.classList.remove('hidden');
+        header.style.display = 'block';
     });
 
     // Navegar a Page 2 (Filter Page)
-    goToPage2.addEventListener('click', function() {
-        page1.classList.add('hidden');
-        page2.classList.remove('hidden');
-        navbar.classList.add('hidden');
-        sidebar.classList.add('hidden');
-    });
+    // goToPage2.addEventListener('click', function() {
+    //     page1.classList.add('hidden');
+    //     page2.classList.remove('hidden');
+    //     navbar.classList.add('hidden');
+    //     sidebar.classList.add('hidden');
+    // });
 
     // Volver a Page 1 desde Page 2
     goToPage1FromPage2.addEventListener('click', function() {
@@ -534,15 +979,23 @@
                         const categoryBlock = document.createElement('div');
                         categoryBlock.className = 'grid-item';
 
+                        const imageBlock = document.createElement('div');
+                        imageBlock.className = 'imageTop1';
+
                         const categoryTitle = document.createElement('h5');
                         categoryTitle.textContent = category;
-                        categoryBlock.appendChild(categoryTitle);
-
+                        imageBlock.appendChild(categoryTitle);
+                        categoryBlock.appendChild(imageBlock);
+                        
                         const ul = document.createElement('ul');
                         data[category].forEach(indicator => {
                             const li = document.createElement('li');
-                            li.textContent = indicator;
-
+                            //li.textContent = indicator;
+                            const a = document.createElement('a');
+                            a.href = "javascript:void(0);";
+                            a.textContent = indicator;
+                            a.onclick = () => fetchIndicatorData(indicator, selectedSector);
+                            li.appendChild(a);  
                             if (selectedIndicators.includes(indicator)) {
                                 li.classList.add('selected-indicator');
                             }
@@ -572,7 +1025,8 @@
     // Función para actualizar la interfaz según los datos del sector seleccionado
     const updateUI = (sectorData) => {
         console.log('Actualizando UI con datos:', sectorData);
-
+        selectedSector = document.getElementById('sectorSelect').value;
+        console.log('sectorSelect', selectedSector);
         // Guardar datos del sector actual
         currentSectorData = sectorData;
 
@@ -582,7 +1036,7 @@
         indicatorSelect.innerHTML = '<option value="">-- Select Indicator --</option>';
         indicatorSelect.disabled = true;
         indicatorDetails.style.display = 'none';
-
+       
         // Iterar en groupOrder para mantener el orden de categorías
         groupOrder.forEach(category => {
             if (sectorData[category]) {
@@ -590,16 +1044,31 @@
                 const categoryBlock = document.createElement('div');
                 categoryBlock.className = 'grid-item';
 
+                const imageBlock = document.createElement('div');
+                imageBlock.className = 'imageTop1';
+
                 const categoryTitle = document.createElement('h5');
                 categoryTitle.textContent = category;
-                categoryBlock.appendChild(categoryTitle);
+                imageBlock.appendChild(categoryTitle);
+                categoryBlock.appendChild(imageBlock);
 
                 const ul = document.createElement('ul');
                 sectorData[category].forEach(indicator => {
                     const li = document.createElement('li');
-                    li.textContent = indicator;
+                    //li.textContent = indicator;
+                    const a = document.createElement('a');
+                    a.href = "javascript:void(0);";
+                    a.textContent = indicator;
+                    a.onclick = () => fetchIndicatorData(indicator, selectedSector);
+                    li.appendChild(a);  
+                    if (selectedIndicators.includes(indicator)) {
+                        li.classList.add('selected-indicator');
+                    }
+                    
                     ul.appendChild(li);
                 });
+
+                
                 categoryBlock.appendChild(ul);
                 indicatorGrid.appendChild(categoryBlock);
 
@@ -620,6 +1089,7 @@
             .then(data => {
                 console.log('Datos recibidos para el sector:', sector, data);
                 updateUI(data); // Actualizar la UI con los datos recibidos
+                
             })
             .catch(error => {
                 console.error('Error al obtener datos del sector seleccionado:', error);
@@ -629,6 +1099,7 @@
     // Evento: Cargar datos al cambiar el sector
     sectorSelectDetails.addEventListener('change', function () {
         const selectedSector = this.value;
+        console.log('Sector seleccionado-->', selectedSector);
         fetchAndUpdateSector(selectedSector); // Cargar los datos del sector seleccionado
     });
 

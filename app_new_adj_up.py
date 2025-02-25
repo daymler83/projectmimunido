@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file, send_from_directory
+from flask import Flask, render_template, jsonify, request, send_file, send_from_directory, url_for
 from markupsafe import Markup
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -124,11 +124,13 @@ def export_data():
 def home():
     selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()]
     selected_indicators = selected_indicators or []
+    image_url = url_for('serve_static', filename='image1.jpg')
     return render_template(
         'index_indi_adj_up.html', 
         categories=categories, 
         show_presentation=True, 
-        selected_indicators=selected_indicators
+        selected_indicators=selected_indicators,
+        image_url=image_url
     )
 
 

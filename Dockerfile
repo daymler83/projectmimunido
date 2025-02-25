@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the requirements.txt file to the correct path
 COPY requirements.txt /app/projects/mimunido/requirements.txt
-
+COPY images/image1.jpg /app/projects/mimunido/static/image1.jpg
 # Install Python dependencies
 RUN pip install --no-cache-dir -r /app/projects/mimunido/requirements.txt
 

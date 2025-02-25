@@ -1,0 +1,1059 @@
+
+html { width: 100%;
+  }
+
+/* Font */
+
+
+.lato-thin {
+    font-family: "Lato", serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  .lato-light {
+    font-family: "Lato", serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .lato-regular {
+    font-family: "Lato", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .lato-bold {
+    font-family: "Lato", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .lato-black {
+    font-family: "Lato", serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  .lato-thin-italic {
+    font-family: "Lato", serif;
+    font-weight: 100;
+    font-style: italic;
+  }
+  
+  .lato-light-italic {
+    font-family: "Lato", serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .lato-regular-italic {
+    font-family: "Lato", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .lato-bold-italic {
+    font-family: "Lato", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+  .lato-black-italic {
+    font-family: "Lato", serif;
+    font-weight: 900;
+    font-style: italic;
+  }
+  
+
+
+
+
+/******************************************* HOME*********************************************************/
+
+/* Style for the intro page (Page 0) */
+
+
+
+
+#page0 {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center; background-color: #ffffff;
+}
+
+#page0 h1 {
+	font-size: 3rem;
+	font-weight: 700;
+    color: #002961;
+    text-align: left; margin: 0px;
+}
+.highlight {
+    color: #ff060a;
+}
+
+#page0 h3 {
+	font-size: 1.5rem;
+	font-weight: 500; 
+    text-align: left; color: #002961;
+    
+    
+}
+
+#page0 p {
+
+    font-size: 1rem;
+    margin: 20px 0;
+    position: absolute;
+    bottom: 2%;
+    right: 0;
+    color: #fff;
+    display: block;
+    background: #ff060a;
+    padding: 12px;
+}
+
+#page0 button {
+	padding: 10px 20px;
+	border-radius: 0px;
+	background-color: #002961;
+	color: white;
+	border: none;
+	font-size: 1.2rem;
+	width: 142px;
+    margin-top: 20px;
+}
+
+
+
+.btn {
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente (opcional) */
+  
+    color:#000000;
+    border: none;
+    cursor: pointer;
+    font-size: 16px; 
+	width: 100%;
+}
+
+.btn i {
+ 
+    margin-left: 15px; /* Espacio entre el icono y el texto */
+    font-size: 18px;
+}
+
+/* Style for the blue navigation bar (fixed) on Page 1 only */
+.navbar {
+
+	color: white;
+	text-align: center;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	padding:  0 16px;
+}
+
+.navbar h2{     
+	float: left;
+    line-height: 48px;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+/* Space to ensure the content starts below the fixed navbar (Page 1) */
+.content {
+	margin-top: 80px;
+}
+
+/* Grid layout for the indicators, with 3 columns */
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(3, 2fr);
+	grid-gap: 20px;
+	width: 100%
+}
+
+
+
+
+
+
+/* Styling for the details section */
+#indicatorDetails {
+	margin-top: 20px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+}
+
+
+.selected-indicator {
+	font-weight: bold;
+	color: black;
+	/* Opcional, para un color destacado*/
+}
+
+#sectorSelect {
+	margin-left: 20px;
+	/* Ajusta el valor según el espacio deseado */
+}
+
+
+/* Hide page 2 initially */
+.hidden {
+	display: none;
+}
+
+/* Flex layout for dropdowns on the left and details on the right for Page 2 */
+.grid-layout {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-gap: 20px;
+}
+
+/* Initially hide the details until a valid selection is made */
+#indicatorDetails {
+	display: none;
+}
+
+/* Extra space on Page 2 between content and header */
+.content-page2 {
+	margin-top: 40px;
+}
+
+/* New sidebar on the right */
+.right-sidebar {
+	position: fixed;
+	top: 80px;
+	/* Adjust based on your navbar height */
+	right: 0;
+	width: 250px;
+	background-color: #f8f9fa;
+	padding: 15px;
+	border-left: 2px solid #007bff;
+	height: calc(100vh - 80px);
+	overflow-y: auto;
+}
+
+
+
+/* Styling for buttons in the sidebar */
+.right-sidebar .btn {
+	width: 100%;
+	margin-bottom: 20px;
+	background-color: white;
+	color: #007bff;
+	border: 1px solid #007bff;
+}
+
+.right-sidebar .btn:hover {
+	background-color: #007bff;
+	color: white;
+}
+
+/* Alinear los selectores horizontalmente con tamaño uniforme */
+.grid-layout {
+	display: flex;
+	/* Disposición en fila */
+	flex-direction: row;
+	/* Elementos en línea horizontal */
+	justify-content: flex-start;
+	/* Alinear a la izquierda */
+	align-items: center;
+	/* Centrar verticalmente */
+	gap: 20px;
+	/* Espaciado entre los selectores */
+	margin-bottom: 20px;
+	/* Separación inferior */
+}
+
+/* Selectores con tamaño uniforme */
+#sectorSelectDetails,
+#categorySelect,
+#indicatorSelect {
+	width: 300px;
+	/* Ancho fijo para uniformidad */
+	font-size: 1.2rem;
+	/* Tamaño de fuente grande */
+	padding: 8px;
+	/* Espaciado interno */
+	border-radius: 6px;
+	/* Bordes redondeados */
+	border: 1px solid #007bff;
+	/* Borde azul */
+}
+
+/* Etiquetas alineadas con los selectores */
+label.form-label {
+	font-size: 1rem;
+	/* Tamaño de fuente consistente */
+	font-weight: bold;
+	/* Texto destacado */
+	color: #333;
+	/* Color oscuro */
+	margin-bottom: 5px;
+	/* Espaciado entre etiqueta y selector */
+}
+
+/* Tabla compacta */
+#indicatorDetails {
+	width: 70%;
+	margin: 0 auto;
+	padding: 10px;
+	border: 1px solid #007bff;
+	border-radius: 8px;
+	background-color: #f0f8ff;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	/* Para evitar que crezca hacia los lados */
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1rem;
+	/* Tamaño de fuente ajustado */
+	color: #333;
+}
+
+.table th,
+.table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.table td {
+	white-space: wrap;
+	/* Evita saltos de línea dentro de la celda */
+	overflow: hidden;
+	/* Oculta texto desbordado */
+	text-overflow: ellipsis;
+	/* Muestra puntos suspensivos si el texto es muy largo */
+}
+
+
+.table th {
+	background-color: #e7f3ff;
+	/* Fondo azul claro */
+	font-weight: bold;
+}
+
+/* Selectores */
+.selectors {
+	display: flex;
+	gap: 15px;
+	/* Espaciado entre selectores */
+	margin-bottom: 20px;
+}
+
+/* Ajuste del botón */
+button {
+
+	font-size:0.8rem; 
+	text-align: left;
+	/* Tamaño de fuente aumentado */
+	border: none;
+	background-color: #ffffff;
+	width: 100%; 
+	text-transform: uppercase; 
+
+}
+
+
+
+button .material-icons {
+	font-size: 12px; float: right;
+
+	
+
+}{
+
+	font-size:0.9rem;
+	/* Tamaño de fuente aumentado */
+	padding: 10px 20px;
+	/* Espaciado interno */
+	border: none;
+	width: 100%; background-color: #ffffff;
+
+}
+
+
+/******************************************************** Page 2 *********************************************************/
+/* Style for the intro page (Page 0) */
+
+
+
+
+/* Space to ensure the content starts below the fixed navbar (Page 1) */
+.content {
+	margin-top: 80px;
+}
+
+
+
+
+
+/* Styling for the details section */
+#indicatorDetails {
+	margin-top: 20px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+}
+
+
+.selected-indicator {
+	font-weight: bold;
+	color: black;
+	/* Opcional, para un color destacado*/
+}
+
+#sectorSelect {
+	margin-left: 20px;
+	/* Ajusta el valor según el espacio deseado */
+}
+
+
+/* Hide page 2 initially */
+.hidden {
+	display: none;
+}
+
+/* Flex layout for dropdowns on the left and details on the right for Page 2 */
+.grid-layout {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-gap: 20px;
+}
+
+/* Initially hide the details until a valid selection is made */
+#indicatorDetails {
+	display: none;
+}
+
+/* Extra space on Page 2 between content and header */
+.content-page2 {
+	margin-top: 40px;
+}
+
+
+
+/* Selectores con tamaño uniforme */
+#sectorSelectDetails,
+#categorySelect,
+#indicatorSelect {
+	width: 300px;
+	/* Ancho fijo para uniformidad */
+	font-size: 1.2rem;
+	/* Tamaño de fuente grande */
+	padding: 8px;
+	/* Espaciado interno */
+	border-radius: 6px;
+	/* Bordes redondeados */
+	border: 1px solid #007bff;
+	/* Borde azul */
+}
+
+/* Etiquetas alineadas con los selectores */
+label.form-label {
+	font-size: 1rem;
+	/* Tamaño de fuente consistente */
+	font-weight: bold;
+	/* Texto destacado */
+	color: #333;
+	/* Color oscuro */
+	margin-bottom: 5px;
+	/* Espaciado entre etiqueta y selector */
+}
+
+/* Tabla compacta */
+#indicatorDetails {
+	width: 70%;
+	margin: 0 auto;
+	padding: 10px;
+	border: 1px solid #007bff;
+	border-radius: 8px;
+	background-color: #f0f8ff;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	/* Para evitar que crezca hacia los lados */
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1rem;
+	/* Tamaño de fuente ajustado */
+	color: #333;
+}
+
+.table th,
+.table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.table td {
+	white-space: wrap;
+	/* Evita saltos de línea dentro de la celda */
+	overflow: hidden;
+	/* Oculta texto desbordado */
+	text-overflow: ellipsis;
+	/* Muestra puntos suspensivos si el texto es muy largo */
+}
+
+
+.table th {
+	background-color: #e7f3ff;
+	/* Fondo azul claro */
+	font-weight: bold;
+}
+
+/* Selectores */
+.selectors {
+	display: flex;
+	gap: 15px;
+	/* Espaciado entre selectores */
+	margin-bottom: 20px;
+}
+
+
+
+/********************************************** Page 3 **********************************************/
+
+
+
+
+/* Space to ensure the content starts below the fixed navbar (Page 1) */
+.content {
+	margin: 0 10px;
+}
+
+
+
+.grid-item {
+	background-color: #e9f4fd;
+	border-radius: 0 10px 10px;
+
+
+}
+.grid-item .imageTop1, .grid-item .imageTop2, .grid-item .imageTop3, .grid-item .imageTop4, .grid-item .imageTop5, .grid-item .imageTop6, .grid-item .imageTop7, .grid-item .imageTop8, .grid-item .imageTop9, .grid-item .imageTop10, .grid-item .imageTop11{
+	 height: 120px; position: relative; background-size:cover;
+}
+
+.grid-item .imageTop1{
+	background-image: url("../images/image1.jpg"); 
+}
+.grid-item .imageTop2{
+	background-image: url("../images/image2.jpg"); 
+}
+.grid-item .imageTop3{
+	background-image: url("../images/image3.jpg"); 
+}
+.grid-item .imageTop4{
+	background-image: url("../images/image4.jpg"); 
+}
+.grid-item .imageTop5{
+	background-image: url("../images/image5.jpg"); 
+}
+.grid-item .imageTop6{
+	background-image: url("../images/image6.jpg"); 
+}
+.grid-item .imageTop7{
+	background-image: url("../images/image7.jpg"); 
+}
+.grid-item .imageTop8{
+	background-image: url("../images/image8.jpg"); 
+}
+.grid-item .imageTop9{
+	background-image: url("../images/image9.jpg"); 
+}
+.grid-item .imageTop10{
+	background-image: url("../images/image10.jpg"); 
+}
+.grid-item .imageTop11{
+	background-image: url("../images/image11.jpg"); 
+}
+
+
+
+
+
+.grid-item h5 {
+    color: #ffffff; /* Mantiene el texto completamente opaco */
+    position: absolute;
+    bottom: 10px;
+    display: block;
+    width: 100%;
+    background: rgba(0, 41, 98, 0.7); /* Azul con 70% de opacidad */
+    padding-left: 10px;
+    padding: 10px; /* Asegura que el fondo se vea bien */
+}
+
+
+/* Styling the indicators list */
+.grid-item ul {
+	list-style-type: disc;
+	/* This adds bullet points */
+	padding-left: 20px;
+	/* Adds spacing to the left */
+	margin: 30px 21px;
+}
+
+.grid-item li {
+	margin-bottom: 5px;
+	/* Adds some space between each list item */
+}
+
+/* Enhance the section titles */
+.section-title {
+	margin-top: 74px;
+	color: #ffffff;
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+.section-title h3 { font-weight: 300;     padding: 0;
+}
+
+/* Improved button styling */
+.btn-primary,
+.btn-secondary {
+	border-radius: 50px;
+	padding: 10px 20px;
+}
+
+/* Styling for the details section */
+#indicatorDetails {
+	margin-top: 20px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+}
+
+
+.selected-indicator {
+	font-weight: bold;
+	color: black;
+	/* Opcional, para un color destacado*/
+}
+
+#sectorSelect {
+	margin-left: 20px;
+	/* Ajusta el valor según el espacio deseado */
+}
+
+
+/* Hide page 2 initially */
+.hidden {
+	display: none;
+}
+
+/* Flex layout for dropdowns on the left and details on the right for Page 2 */
+.grid-layout {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-gap: 20px;
+}
+
+/* Initially hide the details until a valid selection is made */
+#indicatorDetails {
+	display: none;
+}
+
+/* Extra space on Page 2 between content and header */
+.content-page2 {
+	margin-top: 40px;
+}
+
+
+/* Selectores con tamaño uniforme */
+#sectorSelectDetails,
+#categorySelect,
+#indicatorSelect {
+	width: 300px;
+	/* Ancho fijo para uniformidad */
+	font-size: 1.2rem;
+	/* Tamaño de fuente grande */
+	padding: 8px;
+	/* Espaciado interno */
+	border-radius: 6px;
+	/* Bordes redondeados */
+	border: 1px solid #007bff;
+	/* Borde azul */
+}
+
+/* Etiquetas alineadas con los selectores */
+label.form-label {
+	font-size: 1rem;
+	/* Tamaño de fuente consistente */
+	font-weight: bold;
+	/* Texto destacado */
+	color: #333;
+	/* Color oscuro */
+	margin-bottom: 5px;
+	/* Espaciado entre etiqueta y selector */
+}
+
+/* Tabla compacta */
+#indicatorDetails {
+	width: 70%;
+	margin: 0 auto;
+	padding: 10px;
+	border: 1px solid #007bff;
+	border-radius: 8px;
+	background-color: #f0f8ff;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	/* Para evitar que crezca hacia los lados */
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1rem;
+	/* Tamaño de fuente ajustado */
+	color: #333;
+}
+
+.table th,
+.table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+	vertical-align: top;
+	padding-right: 10px;
+}
+
+.table td {
+	white-space: wrap;
+	/* Evita saltos de línea dentro de la celda */
+	overflow: hidden;
+	/* Oculta texto desbordado */
+	text-overflow: ellipsis;
+	/* Muestra puntos suspensivos si el texto es muy largo */
+}
+
+
+.table th {
+	background-color: #e7f3ff;
+	/* Fondo azul claro */
+	font-weight: bold;
+}
+
+/* Selectores */
+.selectors {
+	display: flex;
+	gap: 15px;
+	/* Espaciado entre selectores */
+	margin-bottom: 20px;
+}
+
+
+/*********************************** Nuevos estiloss ************************************/
+body {
+    font-family: "Lato", sans-serif;
+    font-weight: 400; /* Regular por defecto */
+    font-style: normal; 
+    margin: 0;
+	background-color: #002961;
+}
+
+.content {
+    flex: 1; /* Ocupa el 50% superior */
+
+}
+
+.bg-image {
+    height: 50vh; /* Ocupa el 50% inferior de la pantalla */
+    background-image: url("../images/home.jpg"); /* Ruta de la imagen */
+    background-size: cover; /* Ajuste para que la imagen cubra toda el área */
+    background-position: center; /* Centrar la imagen */
+    background-repeat: no-repeat; /* No repetir la imagen */
+}
+.contenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    height: 50vh; /* Ocupa la mitad superior de la pantalla */
+    box-sizing: border-box;
+}
+
+.box {
+    flex: 1; /* Los hace elásticos */
+    padding: 0 20px;
+    text-align: center;
+    border-radius: 10px;
+    text-align: left;
+}
+
+
+
+
+
+
+/* Contenedor del dropdown */
+.custom-dropdown {
+    position: relative;
+    width: 220px;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none; float: right;
+}
+
+/* Elemento seleccionado */
+.dropdown-selected {
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* Opciones del dropdown */
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 2px solid #002962;
+    border-top: none;
+    border-radius: 8px;
+    display: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; 
+	margin-top: 3px;
+}
+
+/* Mostrar las opciones cuando está activo */
+.custom-dropdown.active .dropdown-options {
+    display: block;
+	border-radius: 8px;
+}
+
+/* Opciones del dropdown */
+.dropdown-item {
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #002962;
+    transition: background 0.3s ease; border-radius: 8px;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0; border-radius: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header fijo */
+.header {
+    width: 100%;
+    height: 60px;
+    background-color: #003896;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 1000; position: fixed;
+}
+
+/* Nuevo contenedor */
+.layout-wrapper {
+    display: flex;
+    margin-top: 0px; /* Para evitar que el contenido quede detrás del header */
+}
+
+/* Barra lateral (menú vertical) */
+.sidebar {
+	z-index: 1000; /* Asegurar que aparezca sobre el contenido */
+    width: 250px;
+    height: calc(100vh - 60px); /* Resta la altura del header */
+    background-color: #ffffff;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Ocultar el menú en móvil */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0); z-index: 1000;
+    }
+}
+
+/* Estilos de los links */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    text-align: left;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #2c3e50;
+}
+
+/* Estilos para los iconos dentro del menú */
+.sidebar ul li a .material-icons {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+/* Botón hamburguesa */
+.hamburger {
+    display: none;
+    position: fixed;
+    top: 8px;
+    left: 15px;
+    background: #00296C;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1100; 
+	width: 48px;
+}
+
+.hamburger .material-icons {
+    font-size: 28px;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+}
+
+/* Contenido principal */
+.content2 {
+    margin-left: 250px; z-index: 1;
+
+    flex-grow: 1;
+    width: 100%; background-color: #002961;
+}
+
+@media (max-width: 768px) {
+    .content2 {
+        margin-left: 0;
+    }
+	.header {
+
+		height: auto;
+		padding: 10px 0; position: absolute;
+		
+	}
+	
+	.navbar h2 {
+		margin-top: 38px;
+        text-align: center;
+        float: none;
+        width: 100%;
+	}
+	.layout-wrapper {
+		display: flex
+	;
+		margin-top: 0px;
+	}
+	.content2 {
+
+		padding:16px;
+
+	}
+	.section-title h3 {
+		padding: 23% 5% 0;
+	}
+	.grid-container {
+		margin: 0%; display: block;
+	}
+	.grid-item {
+		overflow: auto;
+		margin-bottom: 30px;
+
+}
+
+.section-title h3 {
+    padding: 0 5%;
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Diseño responsive para mobile */
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column; /* Los coloca uno encima del otro */
+        height: auto; /* Ajusta la altura automáticamente */
+    }
+    .box { width: 100%;
+        
+    }
+	.custom-dropdown {
+
+    float: left;
+    width: 100%;
+	}
+}
