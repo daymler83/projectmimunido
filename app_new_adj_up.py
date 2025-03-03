@@ -194,14 +194,13 @@ def get_indicator_info():
             "Indicator name": indicator_row.get('Indicator', 'N/A'),
             "Description": indicator_row.get('Rationale', 'N/A'),
             "Directionality": indicator_row.get('Directionality', 'N/A'),
-            "Owner": indicator_row.get('Owner', 'N/A'),
-            "Coordinator": indicator_row.get('Coordinator', 'N/A'),
             "Calculation methodology/Formula": indicator_row.get('Formula', 'N/A'),
             "Disaggregation": indicator_row.get('Disaggregation', 'N/A'),
             "Units": indicator_row.get('Units', 'N/A'),
             "Reporting frequency": indicator_row.get('Reporting frequency', 'N/A'),
             "Date of data availability": indicator_row.get('Date of data availability', 'N/A'),
-            "Data source": indicator_row.get('Source', 'N/A')
+            "Data source": indicator_row.get('Source', 'N/A'),
+            "Data steward": indicator_row.get('Data steward', 'N/A')
         })
 
     except IndexError:
