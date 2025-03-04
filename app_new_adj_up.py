@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, send_file, send_from_directory, url_for
+from flask import Flask, render_template, jsonify, request, send_file, send_from_directory, url_for,make_response
 from markupsafe import Markup
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -7,13 +7,18 @@ import pandas as pd
 import os
 import io
 import logging
+import time
+
 
 
 app = Flask(__name__)
 
+
+
 @app.route('/projects/mimunido/static/<path:filename>')
 def serve_static(filename):
-    return send_from_directory(os.path.join(app.root_path, 'projects/mimunido/static'), filename)
+    return send_from_directory(os.path.join(app.root_path, 'static'), filename)
+
 
 # Configuración de la base de datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///indicators_data.db'
@@ -124,7 +129,8 @@ def export_data():
 def home():
     selected_indicators = [indicator.indicator for indicator in SelectedIndicators.query.all()]
     selected_indicators = selected_indicators or []
-    image_url = url_for('serve_static', filename='image1.jpg')
+    image_url = f"/projects/mimunido/static/image1.jpg?v={int(time.time())}"
+    #image_url = url_for('serve_static', filename='image1.jpg') + f"?v={int(time.time())}"
     return render_template(
         'index_indi_adj_up.html', 
         categories=categories, 
@@ -172,6 +178,8 @@ def get_indicators():
 
 
 
+
+
 # Route para obtener información detallada sobre un indicador seleccionado (Página 2)
 #@app.route('/projects/mimunido/get_indicator_info', methods=['POST'])
 
@@ -208,21 +216,6 @@ def get_indicator_info():
         return jsonify({"error": "Indicator not found"}), 404
 
 
-'''
-def get_indicator_info():
-    sector = request.json.get('sector', 'Manufacturing')  # Default to Manufacturing
-    indicator_name = request.json['indicator']
-    #indicator_row = df[df['Indicator'] == indicator_name].iloc[0]  # Obtener la primera fila coincidente
-    indicator_row = df[(df['Sector'] == sector) & (df['Indicator'] == indicator_name)].iloc[0]
-
-    if indicator_row is not None:
-        return jsonify({
-            "Rationale": indicator_row['Rationale'],
-            "Formula": indicator_row['Formula'],
-            "Source": indicator_row['Source']
-        })
-    return jsonify({"error": "Indicator not found"}), 404
-'''
 
 # Route para procesar datos para la página 3 (Ranking)
 
